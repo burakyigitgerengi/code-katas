@@ -1,4 +1,4 @@
-package librarymanager.src;
+package com.librarymanager;
 
 public class Book {
 
@@ -19,29 +19,34 @@ public class Book {
     // GETTERS
 
     public int getBookId() {
-
         return this.bookId;
-
-    }
-
-    public boolean getIsAvailable() {
-
-        return this.isAvailable;
-
     }
 
     public String getTitle() {
-
         return this.title;
-
     }
 
     public String getAuthor() {
-
         return this.author;
     }
 
+    public boolean getIsAvailable() {
+        return this.isAvailable;
+    }
+
     // SETTERS
+
+    public void setBookId(int id) {
+        this.bookId = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 
     public void setIsAvailable(boolean bool) {
         this.isAvailable = bool;
@@ -53,16 +58,16 @@ public class Book {
 
         String availability;
 
-        if (this.isAvailable) {
+        if (getIsAvailable()) {
             availability = "Available";
         } else {
             availability = "Unavailable";
         }
 
-        System.out.println("ID:" + this.bookId);
-        System.out.println("Title:" + this.title);
-        System.out.println("Author:" + this.author);
-        System.out.println("Availability" + availability);
+        System.out.println("Book ID: " + getBookId());
+        System.out.println("Book Title: " + getTitle());
+        System.out.println("Book Author: " + getAuthor());
+        System.out.println("Book Availablitiy: " + availability);
 
     }
 

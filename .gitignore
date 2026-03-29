@@ -1,3 +1,21 @@
 learning-java/.vscode/settings.json
 learning-java/librarymanager/data/database.json
 learning-java/librarymanager/lib/gson-2.10.1.jar
+
+# Maven
+target/
+*.class
+.classpath
+.project
+.settings/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+*.log

@@ -1,4 +1,4 @@
-package librarymanager.src;
+package com.librarymanager;
 
 import java.util.HashMap;
 import com.google.gson.Gson;
@@ -49,20 +49,6 @@ public class Library {
 
     // METHODS
 
-    public void addBook(Book book) {
-
-        books.put(book.getBookId(), book);
-        saveToJson();
-
-    }
-
-    public void addUser(User user) {
-
-        users.put(user.getUserId(), user);
-        saveToJson();
-
-    }
-
     public void showAllBooks() {
 
         if (books.size() == 0) {
@@ -84,7 +70,8 @@ public class Library {
             System.out.println("Borrow failed: User not found.");
             return;
         }
-        if (!books.containsKey(bookId)) {
+
+        else if (!books.containsKey(bookId)) {
             System.out.println("Borrow failed: Book not found.");
             return;
         }
@@ -96,11 +83,6 @@ public class Library {
         }
 
         User borrower = users.get(userId);
-        borrower.getBorrowedBooks().add(bookId);
-        bookToBorrow.setIsAvailable(false);
-        System.out.println("Book borrowed successfully.");
-        saveToJson();
-
     }
 
 }

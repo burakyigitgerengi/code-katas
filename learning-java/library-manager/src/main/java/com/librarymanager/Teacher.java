@@ -1,4 +1,4 @@
-package librarymanager.src;
+package com.librarymanager;
 
 public class Teacher extends User {
 
