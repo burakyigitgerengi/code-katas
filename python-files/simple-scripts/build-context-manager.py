@@ -1,19 +1,15 @@
-class File:
-    def __init__(self, filename, method) -> None:
-        self.file = open(filename, method)
-
-    def __enter__(self):
-        print("Enter")
-        return self.file
-
-    def __exit__(self, type, value, traceback):
-        print(f"{type} {value}, {traceback}")
-        print("Exit")
-        self.file.close()
-        return True
+from contextlib import contextmanager
 
 
-with File("file.txt", "w") as f:
-    print("Middle")
-    f.write("Trabzon")
-    raise Exception()
+@contextmanager
+def file(filename, method):
+    print("enter")
+    file = open(filename, method)
+    yield file
+    file.close()
+    print("exit")
+
+
+with file("text.txt", "w") as f:
+    print("middle")
+    f.write("hello")
