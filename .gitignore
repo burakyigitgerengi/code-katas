@@ -19,3 +19,6 @@ target/
 # OS
 .DS_Store
 *.log
+python-files/simple-scripts/file.txt
+.gitignore
+file.txt
