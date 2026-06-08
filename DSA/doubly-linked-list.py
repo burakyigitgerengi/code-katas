@@ -59,7 +59,7 @@ class DoublyLinkedList:
                     current = current.next
 
 
-# Got these testing values & code from AI
+# Got these testing code from AI
 
 dll = DoublyLinkedList()
 
