@@ -1,44 +1,75 @@
+from __future__ import annotations
+
 import random
 import time
 
-# Healths
 
-MAX_HUMAN_HEALTH = 100
-MAX_PET_HEALTH = 80
+class WrongNamingError(Exception):
 
-# Classes
+    def __str__(self) -> str:
+        return "Only use alphabet characters & the name must be an instance of 'str'."
 
 
-class Gender:
-    MALE = "male"
-    FEMALE = "female"
-    NONBINARY = "nonbinary"
+class GenderError(Exception):
+    def __str__(self) -> str:
+        return "Your selection is only limited to: 1, 2, 3."
 
 
 class Human:
     def __init__(self, name: str, gender: str) -> None:
 
+        self._max_health = 100
+        self.health = self.max_health
         self.name = name
         self.gender = gender
 
-        self.health = MAX_HUMAN_HEALTH
+    @property
+    def max_health(self):
+        return self._max_health
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, input: str):
+
+        if isinstance(input, str) and input.isalpha():
+            self._name = input
+
+        else:
+            raise WrongNamingError
+
+    @property
+    def gender(self):
+        return self._gender
+
+    @gender.setter
+    def gender(self, input: str):
+
+        if isinstance(input, str) and input.isalpha():
+            self._gender = input.capitalize()
+
+        else:
+            raise GenderError
 
     def __str__(self) -> str:
-        return f'Character Name: "{self.name}" | Gender: {self.gender} | Health: {self.health}/{MAX_HUMAN_HEALTH}'
+        return f'Character Name: "{self.name}" | Gender: {self.gender} | Health: {self.health}/{self.max_health}'
 
-    def attack(self, target: Human, Pet) -> int:
+    def attack(self, target: Human | Pet) -> int:
         attack_value = random.randint(20, 40)
         return target.health - attack_value
 
     def explore(self):
         print("Exploring the nearby area...\nThis might take a while.")
-        time.sleep(random.randint(10, 25))
-        chances = [True, False]
-        pet_found = random.choice(chances)
+        time.sleep(random.randint(5, 15))
+        pet_found = random.choice([True, False])
         match pet_found:
             case True:
                 print("You found a pet! Do you want to adopt it?")
-                user_choice_pet_found = input("You can reply by typing yes or no: ")
+                user_choice_pet_found = input(
+                    "You found a pet! Do you want to adopt it?\n(yes/no): "
+                )
                 match user_choice_pet_found:
                     case "yes":
                         pet_name = input("Name your pet: ")
@@ -49,90 +80,100 @@ class Human:
                     case "no":
                         print("You refused to pet.")
 
+                    case _:
+                        print("Invalid chocice.")
+
             case False:
                 user_choice_pet_not_found = input(
-                    "You couldn't find any pet...\nKeep on looking? (yes/no)"
+                    "You couldn't find any pet... Keep on looking?\n(yes/no): "
                 )
                 match user_choice_pet_not_found:
                     case "yes":
                         self.explore()
                     case "no":
                         main_menu()
+                    case _:
+                        print("Invalid chocice.")
 
 
 class Pet:
     def __init__(self, name: str) -> None:
-        while True:
-            try:
-                if name.isalpha():
-                    self.name = name.capitalize()
-                    break
-                else:
-                    raise ValueError("Name must be letters only.")
-            except:
-                ValueError("Name must be letters only.")
 
-        self.health = MAX_PET_HEALTH
+        self._max_health = 75
+        self.health = self.max_health
 
-    def attack(self, target: Human, Pet) -> int:
+        if not isinstance(name, str) or not name.isalpha():
+            raise ValueError("Name must be letters only.")
+
+        self.name = name.capitalize()
+
+    @property
+    def max_health(self):
+        return self._max_health
+
+    def attack(self, target: Human | Pet) -> None:
         attack_value = random.randint(15, 30)
-        return target.health - attack_value
+        target.health -= attack_value
 
     def __str__(self) -> str:
-        return f'Pet Name: "{self.name}"'
+        return f'Pet Name: "{self.name}" | Health: {self.health}/{self.max_health}'
 
 
-# Creation Func
+# Character Creation
 
 
-def create_your_character():
-
-    while True:
-        try:
-            name_input = input("Please insert a name of your desire (letters only): ")
-            if name_input.isalpha():
-                name_input = name_input.capitalize()
-                break
-            else:
-                raise ValueError("Name must be letters only.")
-        except:
-            ValueError("Name must be letters only.")
+def get_name_from_user() -> str:
 
     while True:
         try:
-
-            gender_input = input(
-                "Please insert the number assigned to your preffered gender (male: 1, female: 2, nonbinary: 3): "
+            name_from_user = input(
+                "Please insert a name of your desire for your character: "
             )
 
-            if gender_input == "1":
-                gender_input = "Male"
-                break
-
-            if gender_input == "2":
-                gender_input = "Female"
-                break
-
-            if gender_input == "3":
-                gender_input = "Non-binary"
-                break
+            if name_from_user.isalpha():
+                name_from_user = name_from_user.capitalize()
+                print(f"Name of your character: {name_from_user}")
+                return name_from_user
 
             else:
-                raise ValueError("You can only insert 1, 2, 3.")
-
-        except:
-            ValueError("You can only insert 1, 2, 3.")
-
-    try:
-        global created_char
-        created_char = Human(name_input, gender_input)
-        print("Character sucessfully created.")
-    except:
-        raise ModuleNotFoundError
+                raise WrongNamingError()
+        except WrongNamingError as e:
+            print("Error: ", e)
 
 
-# Main Menu
+def get_gender_from_user() -> str:
+
+    while True:
+        try:
+            gender_from_user = input(
+                "Please insert a gender of your desire for your character:\n1. Female \n2. Male \n3. Other \n> "
+            )
+
+            match gender_from_user:
+
+                case "1":
+                    return "Female"
+
+                case "2":
+                    return "Male"
+
+                case "3":
+                    return "Other"
+
+                case _:
+                    print("Invalid chocice.")
+
+            if not gender_from_user == ["1", "2", "3"]:
+                raise GenderError
+
+            else:
+                raise GenderError
+        except GenderError as e:
+            print("Error: ", e)
+
+
 def main_menu():
+
     print(
         "-Main Menu- \n (1) Inspect Yourself \n (2) Inspect Pet \n (3) Explore \n (0) Exit"
     )
@@ -161,10 +202,17 @@ def main_menu():
         case "0":
             exit()
 
+        case _:
+            print("Invalid chocice.")
 
-# Main
+
 def main():
-    create_your_character()
+    name = get_name_from_user()
+    gender = get_gender_from_user()
+
+    global created_char
+    created_char = Human(name, gender)
+
     print(created_char)
     main_menu()
 
