@@ -1,4 +1,5 @@
-# Code Katas
+<img width="1000" height="231" alt="Animated GIF Upload Fit   Fill(2)" src="https://github.com/user-attachments/assets/9a002741-47c5-419d-a1dd-c7f5814c6b4f" />
+
 
 A collection of programming exercises, coding katas, experiments, and small projects created for learning, practice, and continuous improvement.
 
